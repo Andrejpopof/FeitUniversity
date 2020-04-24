@@ -33,10 +33,10 @@ namespace University.Models
         public int? FirstTeacherId { get; set; }
         public int? SecondTeacherId { get; set; }
 
-        [Display(Name = "First Teacher")]
+        [Display(Name = "Teacher 1")]
         public Teacher FirstTeacher { get; set; }
         
-        [Display(Name ="Second Teacher")]
+        [Display(Name ="Teacher 2")]
        public Teacher SecondTeacher { get; set; }
 
         public ICollection<Enrollment> Students { get; set; }

@@ -52,11 +52,14 @@ namespace University.Models
 
                 context.Enrollment.AddRange(
                   new Enrollment { CourseId = 1, StudentId = 1 },
-                  new Enrollment{ CourseId = 2, StudentId = 1 },
+                  new Enrollment{ CourseId = 2, StudentId = 4 },
                   new Enrollment { CourseId = 3, StudentId = 1 },
-                  new Enrollment { CourseId = 4, StudentId = 2 }
-                  
-                  
+                  new Enrollment { CourseId = 4, StudentId = 6},
+                  new Enrollment { CourseId = 4, StudentId = 2 },
+                  new Enrollment { CourseId = 4, StudentId = 7 },
+                  new Enrollment { CourseId = 4, StudentId = 3 },
+                  new Enrollment { CourseId = 4, StudentId = 3 }
+
               );
                 context.SaveChanges();
 

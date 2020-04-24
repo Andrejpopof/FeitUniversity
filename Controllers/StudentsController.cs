@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using University.Data;
 using University.Models;
+using University.ViewModels;
 
 namespace University.Controllers
 {
@@ -22,7 +23,8 @@ namespace University.Controllers
         // GET: Students
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Student.ToListAsync());
+            var universityContext = _context.Student.Include(p => p.Courses).ThenInclude(p => p.Course);
+            return View(await universityContext.ToListAsync());
         }
 
         // GET: Students/Details/5
@@ -34,6 +36,8 @@ namespace University.Controllers
             }
 
             var student = await _context.Student
+                .Include(p=>p.Courses)
+                .ThenInclude(p=>p.Course)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (student == null)
             {
@@ -73,12 +77,18 @@ namespace University.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Student.FindAsync(id);
+            var student = _context.Student.Where(s => s.Id == id).Include(s => s.Courses).First();
             if (student == null)
             {
                 return NotFound();
             }
-            return View(student);
+            StudentCourseEdit viewModel = new StudentCourseEdit
+            {
+                Student = student,
+                CourseList = new MultiSelectList(_context.Course.OrderBy(s => s.Title), "Id", "Title"),
+                SelectedCourses = student.Courses.Select(sa => sa.CourseId)
+            }; 
+            return View(viewModel);
         }
 
         // POST: Students/Edit/5
@@ -86,9 +96,9 @@ namespace University.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,EnrollmentDate,AcquiredCredits,CurrentSemester,EducationLevel")] Student student)
+        public async Task<IActionResult> Edit(int id, StudentCourseEdit model)
         {
-            if (id != student.Id)
+            if (id != model.Student.Id)
             {
                 return NotFound();
             }
@@ -97,12 +107,24 @@ namespace University.Controllers
             {
                 try
                 {
-                    _context.Update(student);
+                    _context.Update(model.Student);
                     await _context.SaveChangesAsync();
+
+                    IEnumerable<int> listCourses = model.SelectedCourses;
+                    IQueryable<Enrollment> toBeRemoved = _context.Enrollment.Where(s => !listCourses.Contains(s.CourseId) && s.StudentId == id);
+                    _context.Enrollment.RemoveRange(toBeRemoved);
+
+                    IEnumerable<int> existCourses = _context.Enrollment.Where(s => listCourses.Contains(s.CourseId) && s.StudentId == id).Select(s => s.CourseId);
+                    IEnumerable<int> newCourses = listCourses.Where(s => !existCourses.Contains(s));
+                    foreach (int courseId in newCourses)
+                        _context.Enrollment.Add(new Enrollment { CourseId = courseId, StudentId = id });
+
+                    await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.Id))
+                    if (!StudentExists(model.Student.Id))
                     {
                         return NotFound();
                     }
@@ -113,7 +135,7 @@ namespace University.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(model);
         }
 
         // GET: Students/Delete/5

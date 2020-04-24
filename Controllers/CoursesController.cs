@@ -22,7 +22,7 @@ namespace University.Controllers
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            var universityContext = _context.Course.Include(c => c.FirstTeacher).Include(c => c.SecondTeacher);
+            var universityContext = _context.Course.Include(c => c.FirstTeacher).Include(c => c.SecondTeacher).Include(c=>c.Students).ThenInclude(c=>c.Student);
             return View(await universityContext.ToListAsync());
         }
 
@@ -37,6 +37,7 @@ namespace University.Controllers
             var course = await _context.Course
                 .Include(c => c.FirstTeacher)
                 .Include(c => c.SecondTeacher)
+                .Include(c=>c.Students).ThenInclude(c=>c.Student)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (course == null)
             {

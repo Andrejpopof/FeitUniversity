@@ -39,11 +39,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="FirstTeacherId" class="control-label"></label>
-                <select asp-for="FirstTeacherId" class ="form-control" asp-items="ViewBag.FirstTeacherId"></select>
+                <select asp-for="FirstTeacherId" class ="form-control" asp-items="ViewBag.FirstTeacherId">
+                    <option value=null>Select</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="SecondTeacherId" class="control-label"></label>
-                <select asp-for="SecondTeacherId" class ="form-control" asp-items="ViewBag.SecondTeacherId"></select>
+                <select asp-for="SecondTeacherId" class ="form-control" asp-items="ViewBag.SecondTeacherId">
+                    <option value=null>Select</option>
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

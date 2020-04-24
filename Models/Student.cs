@@ -18,6 +18,7 @@ namespace University.Models
         [StringLength(50)]
         public string LastName { get; set; }
 
+
         [Display(Name = "Enrollment Date")]
         [DataType(DataType.Date)]
         public DateTime? EnrollmentDate { get; set; }
