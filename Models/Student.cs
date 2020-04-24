@@ -10,7 +10,7 @@ namespace University.Models
     {
         public int Id { get; set; }
 
-        [Required]                               
+        [Required]
         [StringLength(50)]
         public string FirstName { get; set; }
 
@@ -29,6 +29,14 @@ namespace University.Models
 
         [StringLength(25)]
         public string EducationLevel { get; set; }
+
+        public string FullName
+        {
+            get
+            {
+                return String.Format("{0} {1}", FirstName, LastName);
+            }
+        }
 
         public ICollection<Enrollment> Courses { get; set; }
     }

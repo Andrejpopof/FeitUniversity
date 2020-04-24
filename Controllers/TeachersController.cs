@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using University.Data;
 using University.Models;
+using University.ViewModels;
 
 namespace University.Controllers
 {
@@ -20,9 +21,41 @@ namespace University.Controllers
         }
 
         // GET: Teachers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string firstName,string lastName,string obrazovanie,string akademskiRank)
         {
-            return View(await _context.Teacher.ToListAsync());
+            IQueryable<Teacher> teachers = _context.Teacher.AsQueryable();
+            IQueryable<string> ObrazovanieQuery = _context.Teacher.OrderBy(m => m.Degree).Select(m => m.Degree).Distinct();
+            IQueryable<string> AkademskiRankQuery = _context.Teacher.OrderBy(m => m.AcademicRank).Select(m => m.AcademicRank).Distinct();
+
+            if(!string.IsNullOrEmpty(firstName))
+            {
+                teachers = teachers.Where(t => t.FirstName.Contains(firstName));
+            }
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                teachers = teachers.Where(t => t.LastName.Contains(lastName));
+            }
+            if (!string.IsNullOrEmpty(obrazovanie))
+            {
+                teachers = teachers.Where(t => t.Degree.Contains(obrazovanie));
+            }
+            if (!string.IsNullOrEmpty(akademskiRank))
+            {
+                teachers = teachers.Where(t => t.AcademicRank.Contains(akademskiRank));
+            }
+
+            var TeacherFilterVm = new NastavnikFilterModelView
+            {
+                Obrazovanie = new SelectList(await ObrazovanieQuery.ToListAsync()),
+                AkademskiRank = new SelectList(await AkademskiRankQuery.ToListAsync()),
+                Teachers = await teachers.ToListAsync()
+
+
+            };
+
+
+
+            return View(TeacherFilterVm);
         }
 
         // GET: Teachers/Details/5

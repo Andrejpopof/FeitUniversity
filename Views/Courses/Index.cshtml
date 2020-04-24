@@ -70,10 +70,10 @@
                 @Html.DisplayFor(modelItem => item.EducationLevel)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstTeacher.FirstName)
+                <a asp-controller="Teachers" asp-action="Details" asp-route-id="@item.FirstTeacher.Id">@item.FirstTeacher.FirstName @item.FirstTeacher.LastName</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SecondTeacher.FirstName)
+                <a asp-controller="Teachers" asp-action="Details" asp-route-id="@item.SecondTeacher.Id">@item.SecondTeacher.FirstName @item.SecondTeacher.LastName</a>
             </td>
             <td>
                 @foreach(var student in item.Students)

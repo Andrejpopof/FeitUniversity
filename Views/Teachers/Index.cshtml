@@ -1,4 +1,4 @@
-﻿@model IEnumerable<University.Models.Teacher>
+﻿@model University.ViewModels.NastavnikFilterModelView
 
 @{
     ViewData["Title"] = "Index";
@@ -9,32 +9,46 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form asp-controller="Teachers" asp-action="Index" method="get">
+    <p>
+        Obrazovanie: <select asp-for="obrazovanie" asp-items="Model.Obrazovanie">
+            <option value="">All</option>
+        </select>
+        Academic Rank: <select asp-for="akademskiRank" asp-items="Model.AkademskiRank">
+            <option value="">All</option>
+        </select>
+        First Name: <input type="text" asp-for="FirstName" />
+        Last Name: <input type="text" asp-for="LastName" />
+
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayNameFor(model => model.Teachers[0].FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayNameFor(model => model.Teachers[0].LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Degree)
+                @Html.DisplayNameFor(model => model.Teachers[0].Degree)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AcademicRank)
+                @Html.DisplayNameFor(model => model.Teachers[0].AcademicRank)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OfficeNumber)
+                @Html.DisplayNameFor(model => model.Teachers[0].OfficeNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HireDate)
+                @Html.DisplayNameFor(model => model.Teachers[0].HireDate)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Teachers) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)

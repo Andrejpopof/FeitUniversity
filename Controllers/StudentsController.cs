@@ -21,10 +21,27 @@ namespace University.Controllers
         }
 
         // GET: Students
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string firstName,string lastName)
         {
-            var universityContext = _context.Student.Include(p => p.Courses).ThenInclude(p => p.Course);
-            return View(await universityContext.ToListAsync());
+            IQueryable<Student> students = _context.Student.AsQueryable();
+
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                students = students.Where(m => m.FirstName.Contains(firstName));
+            }
+            if(!string.IsNullOrEmpty(lastName))
+            {
+                students = students.Where(m => m.LastName.Contains(lastName));
+            }
+            
+            students=students.Include(m => m.Courses).ThenInclude(m => m.Course);
+
+            var StudentNameMV = new StudentImePrezimeModelView
+            {
+                Students = await students.ToListAsync()
+
+            };
+            return View(StudentNameMV);
         }
 
         // GET: Students/Details/5

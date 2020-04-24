@@ -1,4 +1,4 @@
-﻿@model IEnumerable<University.Models.Student>
+﻿@model University.ViewModels.StudentImePrezimeModelView
 
 @{
     ViewData["Title"] = "Index";
@@ -9,36 +9,43 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<p>
+    <form asp-controller="Students" asp-action="Index" method="get">
+        First Name: <input type="text" asp-for="firstName" />
+        Last Name: <input type="text" asp-for="firstName" />
+        <input type="submit" value="Filter" />
+    </form>
+</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayNameFor(model => model.Students[0].FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayNameFor(model => model.Students[0].LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EnrollmentDate)
+                @Html.DisplayNameFor(model => model.Students[0].EnrollmentDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AcquiredCredits)
+                @Html.DisplayNameFor(model => model.Students[0].AcquiredCredits)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CurrentSemester)
+                @Html.DisplayNameFor(model => model.Students[0].CurrentSemester)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EducationLevel)
+                @Html.DisplayNameFor(model => model.Students[0].EducationLevel)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Courses)
+                @Html.DisplayNameFor(model => model.Students[0].Courses)
             </th>
 
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Students) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
