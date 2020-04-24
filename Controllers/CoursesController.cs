@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using University.Data;
 using University.Models;
+using University.ViewModels;
 
 namespace University.Controllers
 {
@@ -20,10 +21,37 @@ namespace University.Controllers
         }
 
         // GET: Courses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string courseProgramm , string searchString,int? courseSemester)
         {
-            var universityContext = _context.Course.Include(c => c.FirstTeacher).Include(c => c.SecondTeacher).Include(c=>c.Students).ThenInclude(c=>c.Student);
-            return View(await universityContext.ToListAsync());
+            IQueryable<Course> courses = _context.Course.AsQueryable();
+            IQueryable<string> ProgrammQuery = _context.Course.OrderBy(m => m.Programme).Select(m => m.Programme).Distinct();
+            IQueryable<int> SemesterQuery = _context.Course.OrderBy(m => m.Semester).Select(m => m.Semester).Distinct();
+
+
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                courses = courses.Where(s => s.Title.Contains(searchString));
+            }
+            if (!string.IsNullOrEmpty(courseProgramm))
+            {
+                courses = courses.Where(x => x.Programme == courseProgramm);
+            }
+            if(courseSemester!=null)
+            {
+                courses = courses.Where(x => x.Semester == courseSemester);
+            }
+
+            courses = courses.Include(m => m.FirstTeacher).Include(m => m.SecondTeacher).Include(m => m.Students).ThenInclude(m => m.Student);
+
+            var courseTitleVM = new CourseTitleViewModel 
+            {
+                Programms = new SelectList(await ProgrammQuery.ToListAsync()),
+                Semesters = new SelectList(await SemesterQuery.ToListAsync()),
+                Courses = await courses.ToListAsync()
+            };
+
+            return View(courseTitleVM);
         }
 
         // GET: Courses/Details/5
