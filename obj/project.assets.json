@@ -8589,11 +8589,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Andrej\\Desktop\\zadnja\\FeitUniversity\\University.csproj",
+      "projectUniqueName": "C:\\Users\\Andrej\\Desktop\\webapp\\FeitUniversity\\University.csproj",
       "projectName": "University",
-      "projectPath": "C:\\Users\\Andrej\\Desktop\\zadnja\\FeitUniversity\\University.csproj",
+      "projectPath": "C:\\Users\\Andrej\\Desktop\\webapp\\FeitUniversity\\University.csproj",
       "packagesPath": "C:\\Users\\Andrej\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Andrej\\Desktop\\zadnja\\FeitUniversity\\obj\\",
+      "outputPath": "C:\\Users\\Andrej\\Desktop\\webapp\\FeitUniversity\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Andrej\\AppData\\Roaming\\NuGet\\NuGet.Config",
