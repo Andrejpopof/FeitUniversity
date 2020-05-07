@@ -274,7 +274,7 @@ namespace University.Controllers
             }
 
             var students = _context.Student.Where(s => s.Id == id).FirstOrDefault();
-            ViewData["studentName"] = students.FullName;
+            ViewData["imeStudent"] = students.FullName;
 
             TempData["student"] = id.ToString();
 
@@ -289,10 +289,10 @@ namespace University.Controllers
             {
                 return NotFound();
             }
-            string kurs;
-            if (TempData["selectedEnrollment"] != null)
+            string kurs=null;
+            if (TempData["student"] != null)
             {
-                kurs = TempData["selectedCourse"].ToString();
+                kurs = TempData["student"].ToString();
             }
             TempData.Keep();
 
@@ -315,10 +315,9 @@ namespace University.Controllers
                 return NotFound();
             }
             int kursId = 0;
-            string kurs = null;
-            if (TempData["selectedCourse"] != null)
+            if (TempData["student"] != null)
             {
-                kursId = Int32.Parse(TempData["selectedCourse"].ToString());
+                kursId = Int32.Parse(TempData["student"].ToString());
             }
 
             if (ModelState.IsValid)
