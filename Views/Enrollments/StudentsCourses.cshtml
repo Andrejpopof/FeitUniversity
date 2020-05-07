@@ -1,0 +1,61 @@
+﻿@model IEnumerable<University.Models.Enrollment>
+
+
+    @{
+        ViewData["Title"] = "Enrollment";
+    }
+
+    <h1>Courses for Student:  @ViewData["studentName"]</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Course.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Course.Credits)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ExamPoints)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SeminalPoints)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdditionalPoints)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Grade)
+                </th>
+                <th>Status for this course</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.Credits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExamPoints)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeminalPoints)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AdditionalPoints)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Grade)
+                </td>
+                <td>
+                    <a asp-action="UvidStudent" asp-route-id="@item.Id">Check Status</a>
+                </td>
+
+            </tr>
+            }

@@ -184,24 +184,36 @@ namespace University.Controllers
         }
 
 
-        public async Task<IActionResult>Uvid(int id,int? Year)
+        public async Task<IActionResult>Uvid(int id)
         {
             if ( id == null)
             {
                 return NotFound();
             }
 
-             var courses = _context.Course.Where(s => s.Id == id).FirstOrDefault();
+            TempData["selectedCourse"] = id;
+            TempData.Keep();
+
+            var courses = _context.Course.Where(s => s.Id == id).FirstOrDefault();
+            ViewData["CourseTitle"]=courses.Title;
              var enrollments = _context.Enrollment.Where(m => m.CourseId == id).Include(m=>m.Student);
              return View(enrollments);
         }
 
+
+        [HttpGet]
         public async Task<IActionResult> EditStudentStatus(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+            string kurs;
+            if(TempData["selectedCourse"]!=null)
+            {
+                kurs = TempData["selectedCourse"].ToString();
+            }
+            TempData.Keep();
 
             var enrollment = await _context.Enrollment.FindAsync(id);
             if (enrollment == null)
@@ -209,7 +221,7 @@ namespace University.Controllers
                 return NotFound();
             }
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title", enrollment.CourseId);
-            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FirstName", enrollment.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FullName", enrollment.StudentId);
             return View(enrollment);
         }
 
@@ -220,6 +232,12 @@ namespace University.Controllers
             if (id != enrollment.Id)
             {
                 return NotFound();
+            }
+            int kursId=0;
+            string kurs = null;
+            if (TempData["selectedCourse"] != null)
+            {
+                kursId = Int32.Parse(TempData["selectedCourse"].ToString());
             }
 
             if (ModelState.IsValid)
@@ -240,10 +258,92 @@ namespace University.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Uvid", "Enrollments", new { id = kursId });
+
             }
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title", enrollment.CourseId);
-            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FirstName", enrollment.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FullName", enrollment.StudentId);
+            return View(enrollment);
+        }
+
+        public async Task<IActionResult> StudentsCourses(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var students = _context.Student.Where(s => s.Id == id).FirstOrDefault();
+            ViewData["studentName"] = students.FullName;
+
+            TempData["student"] = id.ToString();
+
+            var enrollments = _context.Enrollment.Where(s => s.StudentId == id).Include(s=>s.Course);
+            return View(enrollments);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UvidStudent(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            string kurs;
+            if (TempData["selectedEnrollment"] != null)
+            {
+                kurs = TempData["selectedCourse"].ToString();
+            }
+            TempData.Keep();
+
+            var enrollment = await _context.Enrollment.FindAsync(id);
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title", enrollment.CourseId);
+            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FullName", enrollment.StudentId);
+            return View(enrollment);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UvidStudent(int id, [Bind("Id,StudentId,CourseId,Semester,Year,Grade,SeminalUrl,ProjectUrl,ExamPoints,SeminalPoints,ProjectPoints,AdditionalPoints,FinishDate")] Enrollment enrollment)
+        {
+            if (id != enrollment.Id)
+            {
+                return NotFound();
+            }
+            int kursId = 0;
+            string kurs = null;
+            if (TempData["selectedCourse"] != null)
+            {
+                kursId = Int32.Parse(TempData["selectedCourse"].ToString());
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(enrollment);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EnrollmentExists(enrollment.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("StudentsCourses", "Enrollments", new { id = kursId });
+
+            }
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title", enrollment.CourseId);
+            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FullName", enrollment.StudentId);
             return View(enrollment);
         }
 

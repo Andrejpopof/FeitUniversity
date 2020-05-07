@@ -188,11 +188,15 @@ namespace University.Controllers
                 return NotFound();
             }
             var teachers = _context.Teacher.Where(m => m.Id == id).FirstOrDefault();
+            ViewData["Teacher"] = teachers.FullName;
 
             var courses = _context.Course.Where(s => s.FirstTeacherId == id || s.SecondTeacherId == id);
 
             return View(courses);
         }
+
+
+       
 
 
         // POST: Courses/Delete/5

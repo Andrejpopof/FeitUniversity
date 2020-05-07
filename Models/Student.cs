@@ -37,7 +37,6 @@ namespace University.Models
                 return String.Format("{0} {1}", FirstName, LastName);
             }
         }
-
         public ICollection<Enrollment> Courses { get; set; }
     }
 }
