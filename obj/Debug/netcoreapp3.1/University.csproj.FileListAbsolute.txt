@@ -712,3 +712,7 @@ C:\Users\Andrej\Desktop\webapp\FeitUniversity\obj\Debug\netcoreapp3.1\Razor\View
 C:\Users\Andrej\Desktop\webapp\FeitUniversity\obj\Debug\netcoreapp3.1\Razor\Views\Enrollments\Edit.cshtml.g.cs
 C:\Users\Andrej\Desktop\webapp\FeitUniversity\obj\Debug\netcoreapp3.1\Razor\Views\Enrollments\Index.cshtml.g.cs
 C:\Users\Andrej\Desktop\webapp\FeitUniversity\obj\Debug\netcoreapp3.1\Razor\Views\Enrollments\EnrollStudents.cshtml.g.cs
+C:\Users\Andrej\Desktop\webapp\FeitUniversity\obj\Debug\netcoreapp3.1\Razor\Views\Enrollments\UnEnrollStudents.cshtml.g.cs
+C:\Users\Andrej\Desktop\webapp\FeitUniversity\obj\Debug\netcoreapp3.1\Razor\Views\Courses\TeachersCourses.cshtml.g.cs
+C:\Users\Andrej\Desktop\webapp\FeitUniversity\obj\Debug\netcoreapp3.1\Razor\Views\Enrollments\Uvid.cshtml.g.cs
+C:\Users\Andrej\Desktop\webapp\FeitUniversity\obj\Debug\netcoreapp3.1\Razor\Views\Enrollments\EditStudentStatus.cshtml.g.cs

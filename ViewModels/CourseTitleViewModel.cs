@@ -18,6 +18,8 @@ namespace University.ViewModels
 
 
         public string searchString { get; set; }
+
+
         
         
     }

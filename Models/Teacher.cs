@@ -32,6 +32,15 @@ namespace University.Models
         [DataType(DataType.Date)]
         public DateTime? HireDate { get; set; }
 
+
+        [Display(Name = "Full Name")]
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
         public ICollection<Course> Courses { get; set; }
         public ICollection<Course> Courses1 { get; set; }
 

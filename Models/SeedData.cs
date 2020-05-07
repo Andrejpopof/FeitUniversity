@@ -23,13 +23,13 @@ namespace University.Models
                 }
 
                 context.Student.AddRange(
-                    new Student {  /*Id = 1, */FirstName = "Rob", LastName = "Reiner", EnrollmentDate = DateTime.Parse("1947-3-6"), AcquiredCredits=60,CurrentSemester=6,EducationLevel="undergrad" },
-                    new Student {  /*Id = 2, */FirstName = "Andrej", LastName = "Popov", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "undergrad" },
-                    new Student {  /*Id = 3, */FirstName = "Filip", LastName = "Pancevski", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "undergrad" },
-                    new Student {  /*Id = 4, */FirstName = "David", LastName = "Petrusevski", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "undergrad" },
-                    new Student {  /*Id = 5, */FirstName = "Angela", LastName = "Tasik", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "undergrad" },
-                    new Student {  /*Id = 6, */FirstName = "Sara", LastName = "Stojanovska", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "undergrad" },
-                    new Student {  /*Id = 7, */FirstName = "Rob", LastName = "Reiner", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "undergrad" }
+                    new Student {  /*Id = 1, */FirstName = "Rob", LastName = "Reiner", EnrollmentDate = DateTime.Parse("1947-3-6"), AcquiredCredits=60,CurrentSemester=6,EducationLevel="Dodiplomski" },
+                    new Student {  /*Id = 2, */FirstName = "Andrej", LastName = "Popov", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "Dodiplomski" },
+                    new Student {  /*Id = 3, */FirstName = "Filip", LastName = "Pancevski", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "Dodiplomski" },
+                    new Student {  /*Id = 4, */FirstName = "David", LastName = "Petrusevski", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "Dodiplomski" },
+                    new Student {  /*Id = 5, */FirstName = "Angela", LastName = "Tasik", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "Dodiplomski" },
+                    new Student {  /*Id = 6, */FirstName = "Sara", LastName = "Stojanovska", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "Dodiplomski" },
+                    new Student {  /*Id = 7, */FirstName = "Rob", LastName = "Reiner", EnrollmentDate = DateTime.Parse("2017-9-1"), AcquiredCredits = 60, CurrentSemester = 6, EducationLevel = "Dodiplomski" }
                 );
                 context.SaveChanges();
 

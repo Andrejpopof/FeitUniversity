@@ -11,25 +11,23 @@
 </p>
 <form asp-controller="Courses" asp-action="Index" method="get">
     <p>
+        Title: <input type="text" asp-for="searchString" />
+        
         Programm: <select asp-for="CourseProgramm" asp-items="Model.Programms">
             <option value="">All</option>
         </select>
         Semester: <select asp-for="CourseSemester" asp-items="Model.Semesters">
             <option value="">All</option>
         </select>
-        Title: <input type="text" asp-for="searchString" />
         <input type="submit" value="Filter" />
     </p>
 
-    <p>
-        <a asp-controller="Enrollments" asp-action="EnrollStudents">Enroll Students</a>
-    </p>
 </form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Courses[0].Title)
+                Course
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Courses[0].Credits)
@@ -48,9 +46,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Courses[0].SecondTeacher)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Courses[0].Students)
             </th>
             <th></th>
         </tr>
@@ -80,15 +75,11 @@
                 <a asp-controller="Teachers" asp-action="Details" asp-route-id="@item.SecondTeacher.Id">@item.SecondTeacher.FirstName @item.SecondTeacher.LastName</a>
             </td>
             <td>
-                @foreach(var student in item.Students)
-                {
-                    <a asp-controller="Students" asp-action="Details" asp-route-id="@student.StudentId">@student.Student.FirstName @student.Student.LastName</a><br />
-                }
-            </td>
-            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                <a asp-controller="Enrollments" asp-action="EnrollStudents" asp-route-id="@item.Id">Enroll Students</a>
+
             </td>
         </tr>
 }

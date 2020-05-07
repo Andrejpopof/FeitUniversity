@@ -10,17 +10,20 @@ namespace University.ViewModels
 {
     public class EnrollStudentsViewModel
     {
-        public int CourseId { get; set; }
+        public Course Course { get; set; }
         public IEnumerable<int> SelectedStudents { get; set; }
 
         public IEnumerable<SelectListItem> StudentList { get; set; }
 
-        
+        [Display(Name = "Finish Date")]
+        [DataType(DataType.Date)]
+        public DateTime? FinishDate { get; set; }
+
+
         public int Year { get; set; }
 
         public string Semester { get; set; }
 
-        public Enrollment Enrollment { get; set; }
 
         public SelectList CoursesList { get; set; }
     }

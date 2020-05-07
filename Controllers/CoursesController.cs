@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using University.Data;
 using University.Models;
 using University.ViewModels;
@@ -78,8 +79,8 @@ namespace University.Controllers
         // GET: Courses/Create
         public IActionResult Create()
         {
-            ViewData["FirstTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FirstName");
-            ViewData["SecondTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FirstName");
+            ViewData["FirstTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FullName");
+            ViewData["SecondTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FullName");
             return View();
         }
 
@@ -96,8 +97,8 @@ namespace University.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FirstTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FirstName", course.FirstTeacherId);
-            ViewData["SecondTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FirstName", course.SecondTeacherId);
+            ViewData["FirstTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FullName", course.FirstTeacherId);
+            ViewData["SecondTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FullName", course.SecondTeacherId);
             return View(course);
         }
 
@@ -114,8 +115,8 @@ namespace University.Controllers
             {
                 return NotFound();
             }
-            ViewData["FirstTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FirstName", course.FirstTeacherId);
-            ViewData["SecondTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FirstName", course.SecondTeacherId);
+            ViewData["FirstTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FullName", course.FirstTeacherId);
+            ViewData["SecondTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FullName", course.SecondTeacherId);
             return View(course);
         }
 
@@ -151,8 +152,8 @@ namespace University.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FirstTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FirstName", course.FirstTeacherId);
-            ViewData["SecondTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FirstName", course.SecondTeacherId);
+            ViewData["FirstTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FullName", course.FirstTeacherId);
+            ViewData["SecondTeacherId"] = new SelectList(_context.Set<Teacher>(), "Id", "FullName", course.SecondTeacherId);
             return View(course);
         }
 
@@ -175,6 +176,24 @@ namespace University.Controllers
 
             return View(course);
         }
+
+
+
+
+        //GET:  Courses/TeachersCourses/1
+        public async Task<IActionResult> TeachersCourses(int? id)
+        {
+            if(id== null)
+            {
+                return NotFound();
+            }
+            var teachers = _context.Teacher.Where(m => m.Id == id).FirstOrDefault();
+
+            var courses = _context.Course.Where(s => s.FirstTeacherId == id || s.SecondTeacherId == id);
+
+            return View(courses);
+        }
+
 
         // POST: Courses/Delete/5
         [HttpPost, ActionName("Delete")]

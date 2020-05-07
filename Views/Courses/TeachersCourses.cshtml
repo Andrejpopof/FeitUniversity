@@ -1,0 +1,69 @@
+﻿@model IEnumerable<University.Models.Course>
+
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<h1>Courses for Teacher</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Credits)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Semester)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Programme)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EducationLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstTeacher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SecondTeacher)
+            </th>
+
+            <th>Link for Enrolled Students</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Credits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Semester)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Programme)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EducationLevel)
+                </td>
+                <td>
+                    <a asp-controller="Teachers" asp-action="Details" asp-route-id="@item.FirstTeacherId">@Html.DisplayFor(modelItem => item.FirstTeacher.FullName)</a>
+                </td>
+                <td>
+                    <a asp-controller="Teachers" asp-action="Details" asp-route-id="@item.SecondTeacherId">@Html.DisplayFor(modelItem => item.SecondTeacher.FullName)</a>
+                </td>
+
+                <td>
+                    <a asp-controller="Enrollments" asp-action="Uvid" asp-route-id="@item.Id">Enrolled Students</a>
+                </td>
+                 
+            </tr>
+        }
