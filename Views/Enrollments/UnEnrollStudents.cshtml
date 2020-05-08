@@ -1,4 +1,4 @@
-﻿@model University.ViewModels.EnrollStudentsViewModel
+﻿@model University.ViewModels.UnEnrollStudentsViewModel
 @{
     ViewData["Title"] = "Enrollments";
 }
@@ -8,12 +8,18 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EnrollStudents">
+        <form asp-action="UnEnrollStudents">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FinishDate" class="control-label"></label>
-                <input asp-for="FinishDate" class="form-control" />
-                <span asp-validation-for="FinishDate" class="text-danger"></span>
+            <div class="form-group" hidden>
+                <label asp-for="Semester" class="control-label"></label>
+                <input asp-for="Semester" class="form-control" />
+                <span asp-validation-for="Semester" class="text-danger">
+                </span>
+            </div>
+            <div class="form-group"hidden>
+                <label asp-for="Year" class="control-label"></label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Students</label>
@@ -21,7 +27,12 @@
                 <span asp-validation-for="SelectedStudents" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Enroll" class="btn btn-primary" />
+                <label asp-for="FinishDate" class="control-label"></label>
+                <input asp-for="FinishDate" class="form-control" />
+                <span asp-validation-for="FinishDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Unenroll" class="btn btn-primary" />
             </div>
         </form>
 
@@ -30,3 +41,4 @@
 <div>
     <a asp-controller="Courses" asp-action="Index">Back to Courses</a>
 </div>
+

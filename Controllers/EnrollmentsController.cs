@@ -134,8 +134,10 @@ namespace University.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> UnEnrollStudents(int? id)
         {
+
             var course = _context.Course.Where(s => s.Id == id).Include(s => s.Students).First();
 
             if (course == null)
@@ -143,44 +145,40 @@ namespace University.Controllers
                 return NotFound();
             }
 
-            var enrollStudentsVM = new EnrollStudentsViewModel
+            var unEnrollStudentsVM = new UnEnrollStudentsViewModel
             {
                 Course = course,
                 StudentList = new MultiSelectList(_context.Student.OrderBy(s => s.Id), "Id", "FullName"),
                 SelectedStudents = course.Students.Select(sa => sa.StudentId),
             };
 
-            return View(enrollStudentsVM);
+            return View(unEnrollStudentsVM);
         }
 
-
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UnEnrollStudents(int id, EnrollStudentsViewModel model) //NEZNAM KAKO UNENROLL
+        public async Task<IActionResult> UnEnrollStudents(int id)
         {
+        
+            var enrollments = await _context.Enrollment.FirstOrDefaultAsync(s => s.Id == id);
+            await TryUpdateModelAsync<Enrollment>(
+               enrollments,
+               "",
+               s => s.FinishDate);
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    IEnumerable<int> listStudents = model.SelectedStudents;
-                    IQueryable<Enrollment> toBeRemoved = _context.Enrollment.Where(s => !listStudents.Contains(s.StudentId) && s.CourseId == id);
-                    _context.Enrollment.RemoveRange(toBeRemoved);
-                    IQueryable<Enrollment> toBeUnEnrolled = _context.Enrollment.Where(s => listStudents.Contains(s.StudentId) && s.CourseId == id);
-                    IEnumerable<int> existStudents = _context.Enrollment.Where(s => listStudents.Contains(s.StudentId) && s.CourseId == id).Select(s => s.StudentId);
-                    IEnumerable<int> newStudents = listStudents.Where(s => !existStudents.Contains(s));
-
-                    foreach (int studentId in existStudents)
-                        _context.Enrollment.UpdateRange(toBeUnEnrolled);
-
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     throw;
                 }
-                return RedirectToAction(nameof(CoursesController.Index));
+                return RedirectToAction(nameof(Index));
             }
-            return View(model);
+            return View(enrollments);
         }
 
 
@@ -390,42 +388,8 @@ namespace University.Controllers
             return View(enrollment);
         }
 
-        // POST: Enrollments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StudentId,CourseId,Semester,Year,Grade,SeminalUrl,ProjectUrl,ExamPoints,SeminalPoints,ProjectPoints,AdditionalPoints,FinishDate")] Enrollment enrollment)
-        {
-            if (id != enrollment.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(enrollment);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EnrollmentExists(enrollment.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title", enrollment.CourseId);
-            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FirstName", enrollment.StudentId);
-            return View(enrollment);
-        }
+        
+        
 
         // GET: Enrollments/Delete/5
         public async Task<IActionResult> Delete(int? id)
