@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using University.Data;
 using University.Models;
@@ -14,6 +17,7 @@ namespace University.Controllers
     public class StudentsController : Controller
     {
         private readonly UniversityContext _context;
+        private object webHostEnvironment;
 
         public StudentsController(UniversityContext context)
         {
@@ -188,5 +192,7 @@ namespace University.Controllers
         {
             return _context.Student.Any(e => e.Id == id);
         }
+
+  
     }
 }
