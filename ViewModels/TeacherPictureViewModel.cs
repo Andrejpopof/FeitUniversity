@@ -7,9 +7,10 @@ using University.Models;
 
 namespace University.ViewModels
 {
-    public class StudentPictureViewModel
+    public class TeacherPictureViewModel
     {
-        public Student student { get; set; }
+        public Teacher Teacher { get; set;}
+
         public IFormFile ProfileImage { get; set; }
     }
 }

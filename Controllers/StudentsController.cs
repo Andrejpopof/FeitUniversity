@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,9 +20,12 @@ namespace University.Controllers
         private readonly UniversityContext _context;
         private object webHostEnvironment;
 
-        public StudentsController(UniversityContext context)
+        private IWebHostEnvironment WebHostEnvironment { get; }
+
+        public StudentsController(UniversityContext context,IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            webHostEnvironment = WebHostEnvironment;
         }
 
         // GET: Students
@@ -193,6 +197,52 @@ namespace University.Controllers
             return _context.Student.Any(e => e.Id == id);
         }
 
-  
+        public IActionResult UploadPic(int id )
+        {
+            var viewModel = new StudentPictureViewModel {
+                ProfileImage = null,
+                student = null,
+
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadPic(int id, IFormFile file)
+        {
+            var viewModel = new StudentPictureViewModel
+            {
+                student = await _context.Student.FindAsync(id),
+                ProfileImage = file,
+
+            };
+
+            string uniqueFileName = UploadedFile(viewModel.ProfileImage);
+            viewModel.student.ProfilePicture = uniqueFileName;
+            _context.Update(viewModel.student);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        private string UploadedFile(IFormFile model)
+        {
+            string uniqueFileName = null;
+
+            if (model != null)
+            {
+                string uploadsFolder = Path.Combine(WebHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(model.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
+        }
+
+
     }
 }
